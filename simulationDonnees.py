@@ -84,3 +84,54 @@ def simulation_donnees(cas_d_etude, plot_p):
         plt.show()
 
     return Z, L, m, H, Hfull, bar_v, C_v, x
+
+
+
+def ellipse(mx, Px, color='blue', confidence=0.99):
+    """
+    Trace une ellipse contenant un certain pourcentage des réalisations
+    d'une variable aléatoire Gaussienne bivariée.
+    
+    Arguments :
+        mx : np.ndarray
+            Moyenne (vecteur 2x1).
+        Px : np.ndarray
+            Matrice de covariance (2x2).
+        color : str
+            Couleur de l'ellipse.
+        confidence : float
+            Niveau de confiance (par défaut 0.99, soit 99%).
+    
+    Retour :
+        h : matplotlib.patches.Ellipse
+            L'objet ellipse pour un usage ultérieur.
+    """
+    from matplotlib.patches import Ellipse
+    import scipy.stats as stats
+
+    # Calcul de la valeur chi² pour le niveau de confiance souhaité
+    chi2_val = stats.chi2.ppf(confidence, df=2)
+
+    # Décomposition en valeurs propres pour orienter l'ellipse
+    eigvals, eigvecs = np.linalg.eigh(Px)
+    
+    # Rayon de l'ellipse (axe principal et secondaire)
+    axes_lengths = 2 * np.sqrt(chi2_val * eigvals)  # Facteur 2 pour un diamètre
+    
+    # Angle d'orientation de l'ellipse
+    angle = np.degrees(np.arctan2(eigvecs[1, 0], eigvecs[0, 0]))
+    
+    # Tracer l'ellipse avec matplotlib
+    ellipse_patch = Ellipse(
+        xy=mx,  # Centre de l'ellipse
+        width=axes_lengths[0],  # Diamètre de l'axe principal
+        height=axes_lengths[1],  # Diamètre de l'axe secondaire
+        angle=angle,  # Orientation de l'ellipse
+        edgecolor=color,
+        facecolor='none',  # Transparent à l'intérieur
+        linewidth=2
+    )
+    plt.gca().add_patch(ellipse_patch)
+    
+    # Retourner l'objet ellipse pour un usage supplémentaire
+    return ellipse_patch
