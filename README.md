@@ -6,17 +6,17 @@ This project aims to illustrate basic stochastic estimation techniques through a
 
 ### Context
 - **World**: A 2D plane with a reference frame \( F_0 = (O, \vec{x_0}, \vec{y_0}) \), where \( \vec{x_0} \) and \( \vec{y_0} \) point East and North, respectively.
-- **Landmarks**: \( M_1, M_2, ..., M_L \), with known absolute positions \( m_l = (u_l, v_l)^T \).
+- **Landmarks**: \( M_1, M_2, \dots, M_L \), with known absolute positions \( m_l = (u_l, v_l)^T \).
 - **Robot**: A point-like entity with an unknown absolute position \( x = (u, v)^T \).
-- **Observations**: Relative measurements \( z_l \) of each landmark \( M_l \) from the robot, combined into \( z = (z_1^T, ..., z_L^T)^T \).
+- **Observations**: Relative measurements \( z_l \) of each landmark \( M_l \) from the robot, combined into \( z = (z_1^T, \dots, z_L^T)^T \).
 
 ## Problem Formulation
 
 1. **Measurement Model**:
    - \( Z = h(x) + V \), where:
      - \( h(.) \) is the measurement function.
-     - \( V \sim G(\bar{v}, C_v) \) is the Gaussian noise with mean \( \bar{v} \) and covariance \( C_v \).
-   - \( h(x) = (h_1(x), ..., h_L(x))^T \), with \( h_l(x) = m_l - x \).
+     - \( V \sim \mathcal{N}(\bar{v}, C_v) \) is the Gaussian noise with mean \( \bar{v} \) and covariance \( C_v \).
+   - \( h(x) = (h_1(x), \dots, h_L(x))^T \), with \( h_l(x) = m_l - x \).
 
 2. **Objective**:
    - Estimate the robot's position \( x \) from the observation vector \( z \).
